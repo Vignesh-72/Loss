@@ -1,4 +1,4 @@
-import { YahooFinance } from 'yahoo-finance2'; 
+import  YahooFinance  from 'yahoo-finance2'; 
 
 export default async function handler(req, res) {
   const { ticker } = req.query;
