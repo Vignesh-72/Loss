@@ -6,19 +6,33 @@ export default async function handler(req, res) {
   if (!ticker) return res.status(400).json({ error: 'Ticker symbol is required' });
 
   try {
-    // FIX: Only suppress 'yahooSurvey'. Removed 'urlDeprecation'.
     const yahooFinance = new YahooFinance({
-        suppressNotices: ['yahooSurvey'] 
+        // 'ripHistorical' suppresses the warning about the old API removal
+        suppressNotices: ['yahooSurvey', 'ripHistorical'] 
     });
 
     const today = new Date();
     const oneYearAgo = new Date();
     oneYearAgo.setFullYear(today.getFullYear() - 1);
+    
+    // Explicitly define Start AND End dates to satisfy strict validation
     const period1 = oneYearAgo.toISOString().split('T')[0];
+    const period2 = today.toISOString().split('T')[0];
 
-    console.log(`Fetching ${ticker} data from ${period1}...`);
+    console.log(`Fetching ${ticker} chart from ${period1} to ${period2}...`);
 
-    const history = await yahooFinance.historical(ticker, { period1, interval: '1d' });
+    // === CHANGE: Use .chart() instead of .historical() ===
+    // This is the modern API endpoint recommended by the error logs.
+    const chartResult = await yahooFinance.chart(ticker, { 
+      period1: period1, 
+      period2: period2, 
+      interval: '1d' 
+    });
+
+    // .chart() returns an object: { meta: {...}, quotes: [...] }
+    // We extract 'quotes' because that is the list of prices our frontend expects.
+    const history = chartResult.quotes;
+
     const quote = await yahooFinance.quote(ticker);
     
     let profile = {}, stats = {};
