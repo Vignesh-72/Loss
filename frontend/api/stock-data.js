@@ -6,9 +6,9 @@ export default async function handler(req, res) {
   if (!ticker) return res.status(400).json({ error: 'Ticker symbol is required' });
 
   try {
-    // CORRECT v3 USAGE: Configuration goes INSIDE the constructor
+    // FIX: Only suppress 'yahooSurvey'. Removed 'urlDeprecation'.
     const yahooFinance = new YahooFinance({
-        suppressNotices: ['yahooSurvey', 'urlDeprecation']
+        suppressNotices: ['yahooSurvey'] 
     });
 
     const today = new Date();
