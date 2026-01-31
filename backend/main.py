@@ -11,6 +11,9 @@ from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from sklearn.linear_model import LinearRegression
 
 app = FastAPI()
+@app.get("/")
+def home():
+    return {"status": "online", "message": "LOSS Backend is running smoothly"}
 analyzer = SentimentIntensityAnalyzer()
 
 # --- SETUP ---

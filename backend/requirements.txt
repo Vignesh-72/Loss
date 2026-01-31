@@ -1,8 +1,8 @@
-yfinance>=0.2.64
-requests>=2.31.0
 fastapi
 uvicorn
 pandas
+numpy
 scikit-learn
-feedparser
 vaderSentiment
+feedparser
+requests
