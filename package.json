@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "yahoo-finance2": "^3.13.0"
+  }
+}
