@@ -9,11 +9,11 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['logo.jpeg', 'logotrans.png'],
       manifest: {
-        name: 'LOSS - Market Analysis',
+        name: 'LOSS - Market Analyzer',
         short_name: 'LOSS',
-        description: 'The Brutalist Market Analyzer',
+        description: 'Analyze market noise with brutal honesty.',
         theme_color: '#262626',
-        background_color: '#262626',
+        background_color: '#1a0b2e', // Matches your index.css arcade-bg
         display: 'standalone',
         orientation: 'portrait',
         scope: '/',
