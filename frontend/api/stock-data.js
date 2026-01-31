@@ -1,5 +1,4 @@
-// frontend/api/stock-data.js
-import YahooFinance from 'yahoo-finance2';
+import { YahooFinance } from 'yahoo-finance2'; 
 
 export default async function handler(req, res) {
   const { ticker } = req.query;
@@ -9,34 +8,35 @@ export default async function handler(req, res) {
   }
 
   try {
-    // === v3 FIX: Create a fresh instance for every request ===
-    const yahooFinance = new YahooFinance(); 
+    // 2. Create a fresh instance for every request
+    const yahooFinance = new YahooFinance();
+
+    // 3. Suppress internal library notices
+    // Note: 'urlDeprecation' is a library-specific flag, unrelated to the Node warning
+    yahooFinance.suppressNotices(['yahooSurvey', 'urlDeprecation']);
 
     const today = new Date();
     const oneYearAgo = new Date();
     oneYearAgo.setFullYear(today.getFullYear() - 1);
-    
-    // Yahoo requires strict ISO date format (YYYY-MM-DD)
     const period1 = oneYearAgo.toISOString().split('T')[0];
-
-    // Suppress warnings to keep logs clean
-    yahooFinance.suppressNotices(['yahooSurvey', 'urlDeprecation']);
 
     console.log(`Fetching ${ticker} data from ${period1}...`);
 
-    // 1. Fetch History
+    // 4. Fetch History
     const history = await yahooFinance.historical(ticker, { 
       period1: period1, 
       interval: '1d' 
     });
 
-    // 2. Fetch Quote
+    // 5. Fetch Quote
     const quote = await yahooFinance.quote(ticker);
     
-    // 3. Fetch Profile (Safely)
+    // 6. Fetch Profile (Safely)
     let profile = {}, stats = {};
     try {
-        const profileData = await yahooFinance.quoteSummary(ticker, { modules: [ "assetProfile", "summaryDetail" ] });
+        const profileData = await yahooFinance.quoteSummary(ticker, { 
+            modules: [ "assetProfile", "summaryDetail" ] 
+        });
         profile = profileData.assetProfile || {};
         stats = profileData.summaryDetail || {};
     } catch (e) {
