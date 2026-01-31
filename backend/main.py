@@ -13,7 +13,8 @@ from sklearn.linear_model import LinearRegression
 app = FastAPI()
 @app.get("/")
 def home():
-    return {"status": "online", "message": "LOSS Backend is running smoothly"}
+    return {"status": "online", "message": "LOSS Backend is running smoothly"} 
+    
 analyzer = SentimentIntensityAnalyzer()
 
 # --- SETUP ---
